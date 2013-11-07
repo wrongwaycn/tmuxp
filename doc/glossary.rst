@@ -1,19 +1,17 @@
 ==============
-tmuxp Glossary
+tmuxp 所涉词汇
 ==============
 
 
 .. glossary::
 
     tmuxp
-        A tool to manage workspaces with tmux. A pythonic abstraction of
-        tmux.
+        一个用于管理tmux工作区的协助工具，同时也是python下对tmux的抽象封装。
 
     tmux(1)
-        The tmux binary. Used internally to distinguish tmuxp is only a
-        layer on top of tmux.
+        tmux二进制库，加(1)用以与tmuxp进行显著区分；tmuxp则只是构建在tmux之上的单独一层。
 
     kaptan
-        configuration management library, see `kaptan on github`_.
+        python下用于管理配置项的第三方类库，详见 `kaptan on github`_ 。
 
 .. _kaptan on github: https://github.com/emre/kaptan

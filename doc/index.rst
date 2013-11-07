@@ -7,37 +7,36 @@ tmuxp
     :align: right
 
 
-tmuxp, a novel approach to manage `tmux(1)`_ (>= 1.8) workspaces through
-`python objects`_.
+tmuxp是一个全新的tmux协助工具，它使用 `python对象`_ 来管理 `tmux(1)`_ (>= 1.8) 的工作区，极大改善了tmux的使用体验。
 
-- Basic support for `freezing live sessions`_.
-- `Importing`_ from `teamocil`_ and `tmuxinator`_.
-- JSON or YAML for `simple`_ or `very elaborate`_ configurations.
-- `bash, zsh and tcsh`_ completion.
-- Unit tested against against live tmux (1.8 and git). See `travis.yml`_
-  file, `tmuxp on Travis CI`_ and `testing`_ page.
-- `Documentation`_, `Examples`_, `Internals`_.
-- and `much, much more`_.
+- 实现了对 `冻结活动会话`_ 的基本支持。
+- 可以 `导入`_  `teamocil`_ 和 `tmuxinator`_ 。
+- 使用JSON或YAML进行 `简单`_ 或 `更灵活复杂`_ 的配置。
+- 支持 `bash, zsh 以及 tcsh`_ 。
+- 已通过tmux(1.8版及git下的最新版)下的单元测试。详见 `travis.yml`_
+  ， `Travis CI下自动测试tmuxp`_ 和 `测试`_ 。
+- `文档`_, `示例`_, `内部构造`_ 。
+- `了解更多`_ 。
 
-Ready to begin? See the `Quickstart`_.
+如果您有兴趣，不妨先试看看 `快速入门`_ 。
 
-.. _tmuxp on Travis CI: http://travis-ci.org/tony/tmuxp
-.. _Documentation: http://tmuxp.rtfd.org/
+.. _Travis CI下自动测试tmuxp: http://travis-ci.org/tony/tmuxp
+.. _文档: http://tmuxp_cn.rtfd.org/
 .. _tmux(1): http://tmux.sourceforge.net/
 .. _tmuxinator: https://github.com/aziz/tmuxinator
 .. _teamocil: https://github.com/remiprev/teamocil
-.. _Examples: http://tmuxp.readthedocs.org/en/latest/examples.html
-.. _freezing live sessions: http://tmuxp.readthedocs.org/en/latest/cli.html#freeze-sessions
-.. _Importing: http://tmuxp.readthedocs.org/en/latest/cli.html#import
-.. _travis.yml: http://tmuxp.readthedocs.org/en/latest/developing.html#travis-ci
-.. _testing: http://tmuxp.readthedocs.org/en/latest/developing.html#test-runner
-.. _python objects: http://tmuxp.readthedocs.org/en/latest/api.html#api
-.. _simple: http://tmuxp.readthedocs.org/en/latest/examples.html#short-hand-inline
-.. _very elaborate: http://tmuxp.readthedocs.org/en/latest/examples.html#super-advanced-dev-environment
-.. _bash, zsh and tcsh: http://tmuxp.readthedocs.org/en/latest/cli.html#bash-completion
-.. _much, much more: http://tmuxp.readthedocs.org/en/latest/about.html#minor-tweaks
-.. _Quickstart: http://tmuxp.readthedocs.org/en/latest/quickstart.html
-.. _Internals: http://tmuxp.readthedocs.org/en/latest/internals.html
+.. _示例: examples.html
+.. _冻结活动会话: cli.html#freeze-sessions
+.. _导入: cli.html#import
+.. _travis.yml: developing.html#travis-ci
+.. _测试: developing.html#test-runner
+.. _python对象: api.html#api
+.. _简单: examples.html#short-hand-inline
+.. _更灵活复杂: examples.html#super-advanced-dev-environment
+.. _bash, zsh 以及 tcsh: cli.html#bash-completion
+.. _了解更多: about.html#minor-tweaks
+.. _快速入门: quickstart.html
+.. _内部构造: internals.html
 
 Explore:
 

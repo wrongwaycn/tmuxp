@@ -1,68 +1,67 @@
 .. _quickstart:
 
-==========
-Quickstart
-==========
+========
+快速入门
+========
 
 CLI
 ---
 
 .. seealso:: :ref:`examples`, :ref:`cli`, :ref:`bash_completion`.
 
-tmuxp launches sessions from a configuration file.
+tmuxp根据配置文件启动作业。
 
-Configuration files can be stored in ``$HOME/.tmuxp`` or in project
-directories as ``.tmuxp.py``, ``.tmuxp.json`` or ``.tmuxp.yaml``.
+配置文件保存在``$HOME/.tmuxp`` 或是 ``.tmuxp.py`` ， ``.tmuxp.json`` ， ``.tmuxp.yaml`` 项目目录下。
 
-Every configuration is required to have:
+配置文件必须包括下列内容:
 
 1. ``session_name``
-2. list of ``windows``
-3. list of ``panes`` for every window in ``windows``
+2. ``windows`` 列表
+3. 每个 ``windows`` 所包含的``panes`` 列表
 
-Create a file, ``~/.tmuxp/example.yaml``:
+创建一个 ``~/.tmuxp/example.yaml`` 文件：
 
 .. literalinclude:: ../examples/2-pane-vertical.yaml
     :language: yaml
 
-with tmuxp:
+运行tmuxp:
 
 .. code-block:: bash
 
     $ tmuxp load -l
 
-It will list configs available in the current directory and
 ``$HOME/.tmuxp``. ``example.yaml`` is detected by tmuxp. 
+列出当前目录以及 ``$HOME/.tmuxp`` 下可用的配置项，然后tmuxp会检测到 ``example.yaml`` 文件的存在
 
 .. code-block:: bash
 
     $ tmuxp load example.yaml
 
-This creates your tmuxp session.
+创建你的tmuxp会话。
 
 
 Pythonics
 ---------
 
 .. seealso::
-    :ref:`tmuxp python API documentation <api>` and :ref:`developing`,
+    :ref:`tmuxp python API 文档 <api>` ， :ref:`developing` ，
     :ref:`internals`.
 
 
-ORM - `Object Relational Mapper`_
+ORM - `对象关系映射(Object Relational Mapping)`_
 
-AL - `Abstraction Layer`_
+AL - `抽象层(Abstration Layer)`_
 
-.. _Abstraction Layer: http://en.wikipedia.org/wiki/Abstraction_layer
-.. _Object Relational Mapper: http://en.wikipedia.org/wiki/Object-relational_mapping
+.. _抽象层(Abstration Layer): http://en.wikipedia.org/wiki/Abstraction_layer
+.. _对象关系映射(Object Relational Mapping): http://en.wikipedia.org/wiki/Object-relational_mapping
 
-python abstraction layer
-""""""""""""""""""""""""
+python抽象层
+""""""""""""
 
 .. module:: tmuxp
 
 ======================================== =================================
-:ref:`tmuxp python api <api>`            :term:`tmux(1)` equivalent
+:ref:`tmuxp python api <api>`            :term:`tmux(1)` 指令
 ======================================== =================================
 :class:`Server.new_session()`            ``$ tmux new-session``
 :class:`Server.list_sessions()`          ``$ tmux list-sessions``
@@ -76,17 +75,15 @@ python abstraction layer
 tmux ORM
 """"""""
 
-tmuxp's core internal feature is the object relation and orchestration of
-the tmux server (think an `engine`_ in `SQLAlchemy`_) and the server's
-sessions, so on...
+tmuxp的主要内部特性是对象关系，编排tmux服务器(类似 `SQLAlchemy`_ 中的 `engine`_ )与会话等等
 
-- :class:`Server` holds :class:`Session` objects.
-- :class:`Session` holds :class:`Window` objects.
-- :class:`Window` holds :class:`Pane` objects.
+- :class:`Server` 包含 :class:`Session` 对象。
+- :class:`Session` 包含 :class:`Window` 对象。
+- :class:`Window` 包含 :class:`Pane` 对象。
 
-instances of tmux objects use tmux `1.8`_'s ``pane_id``, ``window_id`` and
-``session_id`` to build create python objects to build workspaces with the
-freshest data.
+
+tmux对象的实例使用 tmux `1.8`_'s ``pane_id``, ``window_id`` 和
+``session_id`` 创建python对象，从而使用最新的数据来构造工作区。
 
 .. _engine: http://docs.sqlalchemy.org/en/rel_0_8/core/engines.html
 .. _sqlalchemy: http://www.sqlalchemy.org/
