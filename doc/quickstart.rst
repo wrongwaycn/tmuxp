@@ -1,15 +1,15 @@
 .. _quickstart:
 
-========
-快速入门
-========
+====================
+快速入门(Quickstart)
+====================
 
-CLI
----
+命令行(CLI)
+-----------
 
 .. seealso:: :ref:`examples`, :ref:`cli`, :ref:`bash_completion`.
 
-tmuxp根据配置文件启动作业。
+tmuxp根据配置文件启动会话(session)。
 
 配置文件保存在``$HOME/.tmuxp`` 或是 ``.tmuxp.py`` ， ``.tmuxp.json`` ， ``.tmuxp.yaml`` 项目目录下。
 
@@ -30,14 +30,13 @@ tmuxp根据配置文件启动作业。
 
     $ tmuxp load -l
 
-``$HOME/.tmuxp``. ``example.yaml`` is detected by tmuxp. 
 列出当前目录以及 ``$HOME/.tmuxp`` 下可用的配置项，然后tmuxp会检测到 ``example.yaml`` 文件的存在
 
 .. code-block:: bash
 
     $ tmuxp load example.yaml
 
-创建你的tmuxp会话。
+创建你的tmuxp会话(session)。
 
 
 Pythonics
@@ -75,7 +74,7 @@ python抽象层
 tmux ORM
 """"""""
 
-tmuxp的主要内部特性是对象关系，编排tmux服务器(类似 `SQLAlchemy`_ 中的 `engine`_ )与会话等等
+tmuxp的主要内部特性就是tmux服务(类似 `SQLAlchemy`_ 中的 `engine`_ )与会话(session)等对象间的关联和编排。
 
 - :class:`Server` 包含 :class:`Session` 对象。
 - :class:`Session` 包含 :class:`Window` 对象。

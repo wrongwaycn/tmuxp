@@ -1,0 +1,37 @@
+{
+  "windows": [
+    {
+      "panes": [
+        null, 
+        "pane", 
+        "blank", 
+        null, 
+        {
+          "shell_command": null
+        }, 
+        {
+          "shell_command": [
+            null
+          ]
+        }
+      ], 
+      "layout": "tiled", 
+      "window_name": "Blank pane test"
+    }, 
+    {
+      "panes": [
+        "", 
+        {
+          "shell_command": ""
+        }, 
+        {
+          "shell_command": [
+            ""
+          ]
+        }
+      ], 
+      "window_name": "Empty string (return)"
+    }
+  ], 
+  "session_name": "Blank pane test"
+}

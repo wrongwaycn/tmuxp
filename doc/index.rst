@@ -15,7 +15,7 @@ tmuxp是一个全新的tmux协助工具，它使用 `python对象`_ 来管理 `t
 - 支持 `bash, zsh 以及 tcsh`_ 。
 - 已在tmux(1.8版及git下的最新版)下通过单元测试。详见 `travis.yml`_
   ， `Travis CI下自动测试tmuxp`_ 和 `测试`_ 。
-- `文档`_, `示例`_, `内部构造`_ 。
+- `文档`_, `示例`_, `内部结构`_ 。
 - `了解更多`_ 。
 
 
@@ -56,10 +56,3 @@ Explore:
     roadmap
     about_tmux
     glossary
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

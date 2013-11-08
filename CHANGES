@@ -6,11 +6,28 @@ Here you can find the recent changes to tmuxp.
 0.1-dev
 -------
 
+2013-11-07
+''''''''''
+
+- [internal] Remove old logger (based on `tornado's log.py`_), replace
+  with new, simpler one.
+- [cli] [import] fix `teamocil`_ import.
+- [import] [tests]: support import teamocil ``root`` to
+  ``start_directory``.
+
+.. _tornado's log.py: https://github.com/facebook/tornado/blob/master/tornado/log.py
+
 2013-11-06
 ''''''''''
 
 - [cli] [tests] tagged v0.0.37. Many fixes. Python 2.6 support. Will
   switch to per-version changelog after 0.1 release..
+- [config] support for blank panes (null, ``pane``, ``blank``) and panes
+  with empty strings.
+- [freeze] tmuxp freeze supports exporting to blank panes. 
+- [freeze] tmuxp freeze will now return a blank pane for panes that would
+  previously return a duplicate shell command, or generic python, node 
+  interpreter. 
 
 2013-11-05
 ''''''''''

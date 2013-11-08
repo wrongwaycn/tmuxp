@@ -27,8 +27,8 @@ class WorkspaceBuilder(object):
 
     The normal phase of loading is:
 
-        1.  :term:`kaptan` imports json/yaml/ini. ``.get()`` returns
-            python :class:`dict`::
+        1.  :term:`kaptan` imports json/yaml/ini. ``.get()`` returns python
+        :class:`dict`::
 
                 import kaptan
                 sconf = kaptan.Kaptan(handler='yaml')
@@ -41,6 +41,7 @@ class WorkspaceBuilder(object):
                 sconf = sconfig.import_config('path/to/config.yaml').get()
 
             kaptan automatically detects the handler from filenames.
+
         2.  :meth:`config.expand` sconf inline shorthand::
 
                 from tmuxp import config
@@ -79,7 +80,7 @@ class WorkspaceBuilder(object):
         if not sconf:
             raise exc.EmptyConfigException('session configuration is empty.')
 
-        # config.check_consistency(sconf)
+        # config.validate_schema(sconf)
 
         if isinstance(server, Server):
             self.server = server
@@ -250,7 +251,19 @@ def freeze(session):
                 pconf['shell_command'].append(
                     'cd ' + p.get('pane_current_path')
                 )
-            pconf['shell_command'].append(p.get('pane_current_command'))
+
+            current_cmd = p.get('pane_current_command')
+
+            if current_cmd.startswith('-') or \
+                any(current_cmd.endswith(cmd) for cmd in ['python', 'ruby', 'node']):
+                    current_cmd = None
+
+            if current_cmd:
+                pconf['shell_command'].append(current_cmd)
+            else:
+                if not len(pconf['shell_command']):
+                    pconf = 'pane'
+
             wconf['panes'].append(pconf)
 
         sconf['windows'].append(wconf)

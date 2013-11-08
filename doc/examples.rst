@@ -4,8 +4,10 @@
 示例(Examples)
 ==============
 
-简短参数/命令行参数(Short hand / inline)
+简洁的语法(Short hand / inline)
 ----------------------------------------
+
+tmuxp为那些希望配置文件更加精简的用户提供了一套极为简洁语法。
 
 .. sidebar:: short hand
 
@@ -35,7 +37,43 @@ JSON
 .. literalinclude:: ../examples/shorthands.json
     :language: json
 
-分割出两个面板(2 split panes)
+
+空窗格(Blank panes)
+-------------------
+
+无须重复 ``pwd`` 和其他任何命令。 可以使用 ``null``, ``'blank'``, ``'pane'`` 中任何一个。
+注意 ``''`` 被视为空回车。
+
+YAML
+""""
+
+.. literalinclude:: ../examples/blank-panes.yaml
+    :language: yaml
+
+JSON
+""""
+
+.. literalinclude:: ../examples/blank-panes.json
+    :language: json
+
+设置起始目录(Start Directory)
+-----------------------------
+
+等同于 ``tmux new-window -c <start-directory>``.
+
+YAML
+""""
+
+.. literalinclude:: ../examples/start-directory.yaml
+    :language: yaml
+
+JSON
+""""
+
+.. literalinclude:: ../examples/start-directory.json
+    :language: json
+
+分割出两个窗格(2 split panes)
 -----------------------------
 
 .. sidebar:: 2 pane
@@ -150,6 +188,7 @@ JSON
 .. literalinclude:: ../examples/automatic-rename.json
     :language: json
 
+
 定制主面板高度(Main pane height)
 --------------------------------
 
@@ -165,22 +204,8 @@ JSON
 .. literalinclude:: ../examples/main-pane-height.json
     :language: json
 
-定制启动目录(Start Directory)
------------------------------
 
-等同于 ``tmux new-window -c <start-directory>``.
 
-YAML
-""""
-
-.. literalinclude:: ../examples/start_directory.yaml
-    :language: yaml
-
-JSON
-""""
-
-.. literalinclude:: ../examples/start_directory.json
-    :language: json
 
 
 定制高级开发环境(Super-advanced dev environment)
@@ -210,7 +235,7 @@ JSON
 
     tmuxp的会话(session)是可以用python脚本进行定制的。第一个方法是使用 :ref:`API` 中的方法
     第二个方法是给 :class:`tmuxp.WorkspaceBuilder` 传递一个符合规格的 :py:obj:`dict` 字典。
-    详见 :meth:`tmuxp.config.check_consistency` 。
+    详见 :meth:`tmuxp.config.validate_schema` 。
 
 tmuxp需要您的指点，欢迎您在 `github`_ 上赐教。
 

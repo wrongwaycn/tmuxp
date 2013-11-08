@@ -12,7 +12,7 @@ from .helpers import TmuxTestCase
 logger = logging.getLogger(__name__)
 
 current_dir = os.path.abspath(os.path.dirname(__file__))
-example_dir = os.path.abspath(os.path.join(current_dir, '..', '..'))
+example_dir = os.path.abspath(os.path.join(current_dir, '..', '..', 'examples'))
 
 
 class TwoPaneTest(TmuxTestCase):
@@ -265,6 +265,28 @@ class WindowAutomaticRename(TmuxTestCase):
             time.sleep(.2)
 
         self.assertNotEqual(w.get('window_name'), 'man')
+
+
+class BlankPaneTest(TmuxTestCase):
+
+    """:todo: Verify blank panes of various types build into workspaces."""
+
+    yaml_config_file = os.path.join(example_dir, 'blank-panes.yaml')
+
+    def test_blank_pane_count(self):
+
+        test_config = kaptan.Kaptan().import_config(self.yaml_config_file).get()
+        test_config = config.expand(test_config)
+        builder = WorkspaceBuilder(sconf=test_config)
+        builder.build(session=self.session)
+
+        window1 = self.session.findWhere({'window_name': 'Blank pane test'})
+        self.assertEqual(len(window1._panes), 6)
+
+        window1 = self.session.findWhere({'window_name': 'Empty string (return)'})
+        self.assertEqual(len(window1._panes), 3)
+
+        self.assertEqual(self.session, builder.session)
 
 
 class StartDirectoryTest(TmuxTestCase):
