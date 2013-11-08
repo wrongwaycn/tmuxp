@@ -2,7 +2,6 @@
 from __future__ import absolute_import, division, print_function, with_statement
 
 import os
-import unittest
 import logging
 import time
 import kaptan
@@ -18,7 +17,7 @@ example_dir = os.path.abspath(os.path.join(current_dir, '..', '..'))
 
 class TwoPaneTest(TmuxTestCase):
 
-    yaml_config = '''
+    yaml_config = """
     session_name: sampleconfig
     start_directory: '~'
     windows:
@@ -37,7 +36,7 @@ class TwoPaneTest(TmuxTestCase):
       panes:
       - shell_command:
         - htop
-    '''
+    """
 
     def test_split_windows(self):
         s = self.session
@@ -61,7 +60,7 @@ class TwoPaneTest(TmuxTestCase):
 
 class ThreePaneTest(TmuxTestCase):
 
-    yaml_config = '''
+    yaml_config = """
     session_name: sampleconfig
     start_directory: '~'
     windows:
@@ -74,7 +73,7 @@ class ThreePaneTest(TmuxTestCase):
         - echo "hey"
       - shell_command:
         - echo "moo"
-    '''
+    """
 
     def test_split_windows(self):
         s = self.session
@@ -101,7 +100,7 @@ class ThreePaneTest(TmuxTestCase):
 
 class FocusAndPaneIndexTest(TmuxTestCase):
 
-    yaml_config = '''
+    yaml_config = """
     session_name: sampleconfig
     start_directory: '~'
     windows:
@@ -127,7 +126,7 @@ class FocusAndPaneIndexTest(TmuxTestCase):
       - shell_command:
         - echo "moo"
 
-    '''
+    """
 
     def test_split_windows(self):
         s = self.session
@@ -164,7 +163,7 @@ class FocusAndPaneIndexTest(TmuxTestCase):
 
 class WindowOptions(TmuxTestCase):
 
-    yaml_config = '''
+    yaml_config = """
     session_name: test window options
     start_directory: '~'
     windows:
@@ -180,7 +179,7 @@ class WindowOptions(TmuxTestCase):
       - shell_command:
         - echo "moo"
       window_name: editor
-    '''
+    """
 
     def test_window_options(self):
         s = self.session
@@ -207,7 +206,7 @@ class WindowOptions(TmuxTestCase):
 
 class WindowAutomaticRename(TmuxTestCase):
 
-    yaml_config = '''
+    yaml_config = """
     session_name: test window options
     start_directory: '~'
     windows:
@@ -222,7 +221,7 @@ class WindowAutomaticRename(TmuxTestCase):
         - echo "hey"
       - shell_command:
         - echo "moo"
-    '''
+    """
 
     def test_automatic_rename_option(self):
         """ with option automatic-rename: on. """
@@ -269,7 +268,7 @@ class WindowAutomaticRename(TmuxTestCase):
 
 
 class StartDirectoryTest(TmuxTestCase):
-    yaml_config = '''
+    yaml_config = """
     session_name: sampleconfig
     start_directory: '/var'
     windows:
@@ -312,8 +311,7 @@ class StartDirectoryTest(TmuxTestCase):
         - echo "hey"
       - shell_command:
         - echo "moo3"
-
-    '''
+    """
 
     def test_start_directory(self):
 
@@ -332,6 +330,3 @@ class StartDirectoryTest(TmuxTestCase):
             for window in self.session.windows:
                 for p in window.panes:
                     self.assertTrue(p.get('pane_start_path', path))
-
-if __name__ == '__main__':
-    unittest.main()

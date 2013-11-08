@@ -6,39 +6,44 @@
 
 .. _cli_freeze:
 
-冻结会话(Freeze Session)
-""""""""""""""""""""""""
+冻结会话(Freeze sessions)
+"""""""""""""""""""""""""
 
-您可以通过冻结操作来保存您当前的tmux会话。
+.. argparse::
+    :module: tmuxp.cli
+    :func: get_parser
+    :prog: tmuxp
+    :path: freeze
 
-.. code-block:: bash
 
-    $ tmuxp freeze <session-name>
+    您可以通过冻结操作来保存您当前的tmux会话。
 
-Tmuxp 可以将您的会话保存为 ``.json`` 和 ``.yaml`` 格式。
-
-``v0.0.37`` 支持冻结 `virtualenv`_ ，
-
-.. _virtualenv: http://www.virtualenv.org/
+    Tmuxp 可以将您的会话保存为 ``.json`` 和 ``.yaml`` 格式。
 
 .. _cli_load:
 
-加载会话(Load Session)
+加载会话(Load session)
 """"""""""""""""""""""
 
-把配置文件放在 ``$HOME/.tmuxp`` 目录下便于访问，也便于被 :ref:`bash_completion` 探测到。
+.. argparse::
+    :module: tmuxp.cli
+    :func: get_parser
+    :prog: tmuxp
+    :path: load
 
-当然，文件也可以放在任意路径下。
+    把配置文件放在 ``$HOME/.tmuxp`` 目录下便于访问，也便于被 :ref:`bash_completion` 探测到。
 
-.. code-block:: bash
+    当然，文件也可以放在任意路径下。
 
-    $ tmuxp load <filename>
+    .. code-block:: bash
 
-如果在当前工作目录下有 ``.tmuxp.yaml`` 或 ``.tmuxp.json`` 配置文件，可以如下这样加载:
+        $ tmuxp load <filename>
 
-.. code-block:: bash
+    如果在当前工作目录下有 ``.tmuxp.yaml`` 或 ``.tmuxp.json`` 配置文件，可以如下这样加载:
 
-    $ tmuxp load .
+    .. code-block:: bash
+
+        $ tmuxp load .
 
 .. _cli_import:
 
@@ -50,30 +55,36 @@ Tmuxp 可以将您的会话保存为 ``.json`` 和 ``.yaml`` 格式。
 从teamocil导入(From teamocil)
 '''''''''''''''''''''''''''''
 
-
-.. code-block:: bash
-
-    $ tmuxp import teamocil <filename>
+.. argparse::
+    :module: tmuxp.cli
+    :func: get_parser
+    :prog: tmuxp
+    :path: import teamocil
 
 .. _import_tmuxinator:
 
 从tmuxinator导入(From tmuxinator)
 '''''''''''''''''''''''''''''''''
 
-.. code-block:: bash
-
-    $ tmuxp import tmuxinator <filename>
+.. argparse::
+    :module: tmuxp.cli
+    :func: get_parser
+    :prog: tmuxp
+    :path: import tmuxinator
 
 .. _convert_config:
 
-在YAML和JSON转换(Convert between YAML and JSON)
-"""""""""""""""""""""""""""""""""""""""""""""""
+在YAML和JSON间转换(Convert between YAML and JSON)
+"""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. code-block:: bash
+.. argparse::
+    :module: tmuxp.cli
+    :func: get_parser
+    :prog: tmuxp
+    :path: convert
 
-    $ tmuxp convert <filename>
 
-tmuxp可以自动地，准确无误地将 ``.yaml`` 转换为 ``.json`` 或是将 ``.json`` 转换为  ``.yaml`` 。
+    tmuxp可以自动地，准确无误地将 ``.yaml`` 转换为 ``.json`` 或是将 ``.json`` 转换为  ``.yaml`` 。
 
 .. _bash_completion:
 
@@ -98,14 +109,19 @@ Bash实现(Bash completion)
 
     $ source tmuxp.zsh
 
-
 .. _commands:
 
-命令行
-""""""
+其他命令(Other commands)
+""""""""""""""""""""""""
 
 .. argparse::
     :module: tmuxp.cli
     :func: get_parser
     :prog: tmuxp
+    :path: kill-session
 
+.. argparse::
+    :module: tmuxp.cli
+    :func: get_parser
+    :prog: tmuxp
+    :path: attach-session

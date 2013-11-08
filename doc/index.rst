@@ -13,10 +13,11 @@ tmuxp是一个全新的tmux协助工具，它使用 `python对象`_ 来管理 `t
 - 可以 `导入`_  `teamocil`_ 和 `tmuxinator`_ 。
 - 使用JSON或YAML进行 `简单`_ 或 `更灵活复杂`_ 的配置。
 - 支持 `bash, zsh 以及 tcsh`_ 。
-- 已通过tmux(1.8版及git下的最新版)下的单元测试。详见 `travis.yml`_
+- 已在tmux(1.8版及git下的最新版)下通过单元测试。详见 `travis.yml`_
   ， `Travis CI下自动测试tmuxp`_ 和 `测试`_ 。
 - `文档`_, `示例`_, `内部构造`_ 。
 - `了解更多`_ 。
+
 
 如果您有兴趣，不妨先试看看 `快速入门`_ 。
 
@@ -37,6 +38,7 @@ tmuxp是一个全新的tmux协助工具，它使用 `python对象`_ 来管理 `t
 .. _了解更多: about.html#minor-tweaks
 .. _快速入门: quickstart.html
 .. _内部构造: internals.html
+
 
 Explore:
 

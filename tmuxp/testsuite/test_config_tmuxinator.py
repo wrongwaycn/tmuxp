@@ -2,20 +2,18 @@
 from __future__ import absolute_import, division, print_function, with_statement
 
 import os
-import shutil
-import unittest
 import kaptan
 from .. import config, exc
 from ..util import tmux, basestring
+from .helpers import TestCase
 
-from .. import log
 import logging
 
 logger = logging.getLogger(__name__)
 TMUXP_DIR = os.path.join(os.path.dirname(__file__), '.tmuxp')
 
 
-class TmuxinatorTest(unittest.TestCase):
+class TmuxinatorTest(TestCase):
 
     tmuxinator_yaml = """\
     windows:
@@ -84,16 +82,16 @@ class TmuxinatorTest(unittest.TestCase):
             self.tmuxinator_dict), self.tmuxp_dict)
 
 
-class TmuxinatorDeprecationsTest(unittest.TestCase):
+class TmuxinatorDeprecationsTest(TestCase):
 
-    ''' tmuxinator uses `tabs` instead of `windows` in older versions
+    """ tmuxinator uses `tabs` instead of `windows` in older versions
 
     https://github.com/aziz/tmuxinator/blob/master/lib/tmuxinator/project.rb#L18
 
     https://github.com/aziz/tmuxinator/blob/master/spec/fixtures/sample.deprecations.yml
 
     LICENSE: https://github.com/aziz/tmuxinator/blob/master/LICENSE
-    '''
+    """
 
     tmuxinator_yaml = """\
     project_name: sample
@@ -269,12 +267,12 @@ class TmuxinatorDeprecationsTest(unittest.TestCase):
         )
 
 
-class TmuxinatoriSampleTest(unittest.TestCase):
+class TmuxinatoriSampleTest(TestCase):
 
-    '''https://github.com/aziz/tmuxinator/blob/master/spec/fixtures/sample.yml
+    """https://github.com/aziz/tmuxinator/blob/master/spec/fixtures/sample.yml
 
     LICENSE: https://github.com/aziz/tmuxinator/blob/master/LICENSE
-    '''
+    """
 
     tmuxinator_yaml = """\
     # ~/.tmuxinator/sample.yml
@@ -459,6 +457,3 @@ class TmuxinatoriSampleTest(unittest.TestCase):
             config.import_tmuxinator(self.tmuxinator_dict),
             self.tmuxp_dict
         )
-
-if __name__ == '__main__':
-    unittest.main()

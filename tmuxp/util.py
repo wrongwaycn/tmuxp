@@ -36,7 +36,7 @@ class tmux(object):
         proc = tmux('new-session', '-s%' % 'my session')
 
         if proc.stderr:
-            raise Exception('Command: %s returned error: %s' % (proc.cmd, proc.stderr))
+            raise exc.TmuxpException('Command: %s returned error: %s' % (proc.cmd, proc.stderr))
 
         print('tmux command returned %s' % proc.stdout)
 
@@ -65,9 +65,11 @@ class tmux(object):
             stdout = self.process.stdout.read()
             stderr = self.process.stderr.read()
         except Exception as e:
-            logger.error('Exception for %s: \n%s' % (
-                subprocess.list2cmdline(cmd),
-                e.message)
+            logger.error(
+                'Exception for %s: \n%s' % (
+                    subprocess.list2cmdline(cmd),
+                    e
+                )
             )
         self.stdout = stdout.decode().split('\n')
         self.stdout = list(filter(None, self.stdout))  # filter empty values
@@ -221,7 +223,7 @@ def which(exe=None):
             full_path = os.path.join(path, exe)
             if os.access(full_path, os.X_OK):
                 return full_path
-        raise Exception(
+        raise exc.TmuxpException(
             '{0!r} could not be found in the following search '
             'path: {1!r}'.format(
                 exe, search_path
@@ -242,24 +244,24 @@ def is_version(version):
     proc = tmux('-V')
 
     if proc.stderr:
-        raise Exception(proc.stderr)
+        raise exc.TmuxpException(proc.stderr)
 
     installed_version = proc.stdout[0].split('tmux ')[1]
 
     return StrictVersion(installed_version) == StrictVersion(version)
 
 
-def version():
+def has_required_tmux_version():
     """Return if tmux meets version requirement. Version >1.8 or above."""
     proc = tmux('-V')
 
     if proc.stderr:
-        raise Exception(proc.stderr)
+        raise exc.TmuxpException(proc.stderr)
 
     version = proc.stdout[0].split('tmux ')[1]
 
     if StrictVersion(version) <= StrictVersion("1.7"):
-        raise Exception(
+        raise exc.TmuxpException(
             'tmuxp only supports tmux 1.8 and greater. This system'
             ' has %s installed. Upgrade your tmux to use tmuxp.' % version
         )

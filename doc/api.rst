@@ -57,7 +57,7 @@ Internals
 
 .. autoclass:: tmuxp.util.tmux
 
-.. automethod:: tmuxp.util.version
+.. automethod:: tmuxp.util.has_required_tmux_version
 
 .. automethod:: tmuxp.util.oh_my_zsh_auto_title
 
@@ -92,7 +92,7 @@ Finding
 Import and export
 """""""""""""""""
 
-.. automethod:: tmuxp.config.check_consistency
+.. automethod:: tmuxp.config.validate_schema
 
 .. automethod:: tmuxp.config.expand
 
@@ -112,6 +112,8 @@ Workspace Builder
 
 Exceptions
 ----------
+
+.. autoexception:: tmuxp.exc.TmuxpException
 
 .. autoexception:: tmuxp.exc.TmuxSessionExists
 

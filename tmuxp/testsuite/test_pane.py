@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, with_statement
 
-import unittest
-from .helpers import TmuxTestCase
 from . import t
+from .helpers import TmuxTestCase
 
-from .. import log
 import logging
 
 logger = logging.getLogger(__name__)

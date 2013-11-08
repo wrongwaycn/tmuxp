@@ -18,9 +18,8 @@ from .server import Server
 from .window import Window
 from .pane import Pane
 from .workspacebuilder import WorkspaceBuilder
-from .cli import main
-from . import config, util
+from . import config, util, cli
 
 import logging
 
-__version__ = '0.0.36'
+__version__ = '0.0.37a'

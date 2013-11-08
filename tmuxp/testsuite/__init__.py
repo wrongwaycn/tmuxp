@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-"""
-    tmuxp.tests
-    ~~~~~~~~~~~
+"""Tests for tmuxp.
 
-    :copyright: Copyright 2013 Tony Narlock.
-    :license: BSD, see LICENSE for details
+tmuxp.tests
+~~~~~~~~~~~
+
+:copyright: Copyright 2013 Tony Narlock.
+:license: BSD, see LICENSE for details
 
 """
+
 
 from ..server import Server
 t = Server()
@@ -27,3 +29,13 @@ if not logger.handlers:
     testsuite_logger = logging.getLogger(__name__)
 
     testsuite_logger.setLevel('INFO')
+
+
+def suite():
+    """Return TestSuite."""
+    try:
+        import unittest2 as unittest
+    except ImportError:  # Python 2.7
+        import unittest
+
+    return unittest.TestLoader().discover('.', pattern="test_*.py")

@@ -11,25 +11,24 @@ The Tao of tmux
 
     BSD-licensed terminal multiplexer.
 
-tmux is geared for technical users who make heavy use of text-based
-interfaces. If you are interested in starting to learn Linux / OS X better
-as a future programmer or system administrator - welcome.
+tmux is geared for developers and admins who interact regularly with
+CLI (text-only interfaces)
 
-In the world of computers, there are many dimensions:
+In the world of computers, there are 2 realms:
 
-1. The text dimension
-2. The graphical dimension
+1. The text realm
+2. The graphical realm
 
-This is the text dimension. This is about fixed-width fonts and that old
-fashioned black terminal.
+Tmux resides in the text realm. This is about fixed-width fonts and that
+old fashioned black terminal.
 
 tmux is to the console what a desktop is to gui apps. It's a world inside
 the text dimension. Inside tmux you can:
 
-- multitask inside of a terminal, run multiple applications
-- have multiple command lines in the same window
-- have multiple windows in the workspace
-- switch between workspaces, like virtual desktops
+- multitask inside the terminal, run multiple applications.
+- have multiple command lines (pane) in the same window
+- have multiple windows (window) in the workspace (session)
+- switch between multiple workspaces, like virtual desktops
 
 Features
 ========
@@ -37,7 +36,7 @@ Features
 For terminals only. No graphics.
 --------------------------------
 
-uses:
+Uses:
 
 - window-manager for text-based applications
 - keep applications in a background process
@@ -98,8 +97,9 @@ It allows switching between layouts such as...
 
 Organize apps based on your needs
 ---------------------------------
+
 You can categorize and keep many terminals / applications separated into
-multiple windows
+multiple windows.
 
 In addition to being able to split the terminal into multiple panes, you
 can create new windows as much as you want.
@@ -254,3 +254,10 @@ Target
 
 A target, cited in the manual as ``[-t target]`` can be a session, window
 or pane.
+
+License
+-------
+
+This page is licensed `Creative Commons BY-NC-ND 3.0 US`_.
+
+.. _Creative Commons BY-NC-ND 3.0 US: http://creativecommons.org/licenses/by-nc-nd/3.0/us/

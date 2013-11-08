@@ -14,8 +14,7 @@ from __future__ import absolute_import, division, print_function, with_statement
 
 import pipes
 from .window import Window
-from .exc import TmuxSessionExists
-from . import util, formats
+from . import util, formats, exc
 import logging
 logger = logging.getLogger(__name__)
 
@@ -81,7 +80,7 @@ class Session(util.TmuxMappingObject, util.TmuxRelationalObject):
         proc = self.tmux('attach-session', '-t%s' % self.get('session_id'))
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
     def kill_session(self):
         """``$ tmux kill-session``."""
@@ -89,7 +88,7 @@ class Session(util.TmuxMappingObject, util.TmuxRelationalObject):
         proc = self.tmux('kill-session', '-t%s' % self.get('session_id'))
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
     def switch_client(self, target_session=None):
         """``$ tmux kill-session``.
@@ -101,7 +100,7 @@ class Session(util.TmuxMappingObject, util.TmuxRelationalObject):
         proc = self.tmux('switch-client', '-t%s' % self.get('session_id'))
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
     def rename_session(self, new_name):
         """Rename session and return new :class:`Session` object.
@@ -119,7 +118,7 @@ class Session(util.TmuxMappingObject, util.TmuxRelationalObject):
         )
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
         return self
 
@@ -182,7 +181,7 @@ class Session(util.TmuxMappingObject, util.TmuxRelationalObject):
         proc = self.tmux('new-window', *window_args)
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
         window = proc.stdout[0]
 
@@ -218,7 +217,7 @@ class Session(util.TmuxMappingObject, util.TmuxRelationalObject):
         proc = self.tmux('kill-window', target)
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
         self.server._update_windows()
 
@@ -231,9 +230,10 @@ class Session(util.TmuxMappingObject, util.TmuxRelationalObject):
 
         return windows
 
-    #: Property of :meth:_list_windows()
     @property
     def _windows(self):
+        """Property / alias to return :meth:`~._list_windows`."""
+
         return self._list_windows()
 
     def list_windows(self):
@@ -250,7 +250,7 @@ class Session(util.TmuxMappingObject, util.TmuxRelationalObject):
 
     @property
     def windows(self):
-        """Return a :py:obj:`list` of the server's :class:`Window` objects."""
+        """Property / alias to return :meth:`~.list_windows`."""
         return self.list_windows()
     #: Alias of :attr:`windows`.
     children = windows
@@ -273,11 +273,11 @@ class Session(util.TmuxMappingObject, util.TmuxRelationalObject):
         if len(active_windows) == int(1):
             return active_windows[0]
         else:
-            raise Exception(
+            raise exc.TmuxpException(
                 'multiple active windows found. %s' % active_windows)
 
         if len(self._windows) == int(0):
-            raise Exception('No Windows')
+            raise exc.TmuxpException('No Windows')
 
     def select_window(self, target_window):
         """Return :class:`Window` selected via ``$ tmux select-window``.
@@ -296,7 +296,7 @@ class Session(util.TmuxMappingObject, util.TmuxRelationalObject):
         proc = self.tmux('select-window', target)
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
         return self.attached_window()
 

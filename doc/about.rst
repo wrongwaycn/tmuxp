@@ -6,11 +6,19 @@
 介绍
 ====
 
+<<<<<<< HEAD
 tmuxp帮助您管理您的文本工作区，遵守BSD许可。
 
 事实上，tmuxp也是一个构建于tmux之上的对象关系映射(ORM)。
 终端用户可以使用YAML, JSON以及 :py:obj:`dict` 字典配置项来启动工作区
 （就如同 `tmuxinator`_ 和 `teamocil`_ 所做的那样）。
+=======
+tmuxp helps you manage tmux workspaces. Its BSD licensed.
+
+tmuxp is build upon an object relational mapper for tmux. End-users may
+use YAML, JSON and :py:obj:`dict` configurations to launch workspaces like
+`tmuxinator`_ and `teamocil`_.
+>>>>>>> tony/master
 
 您可以跳过本章，直接查看 :ref:`quickstart` 和 :ref:`examples` 。
 

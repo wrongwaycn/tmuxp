@@ -2,19 +2,18 @@
 from __future__ import absolute_import, division, print_function, with_statement
 
 import os
-import shutil
-import unittest
 import kaptan
 from .. import config, exc
 from ..util import tmux
+from .helpers import TestCase
 
-from .. import log
 import logging
 
 logger = logging.getLogger(__name__)
 TMUXP_DIR = os.path.join(os.path.dirname(__file__), '.tmuxp')
 
-class TeamocilTest(unittest.TestCase):
+
+class TeamocilTest(TestCase):
 
     teamocil_yaml = """\
     windows:
@@ -77,21 +76,21 @@ class TeamocilTest(unittest.TestCase):
             self.tmuxp_dict
         )
 
-        config.check_consistency(
+        config.validate_schema(
             config.import_teamocil(
                 self.teamocil_dict
             )
         )
 
     def test_config_to_yaml(self):
-        '''teamocil yaml to tmuxp yaml config
+        """teamocil yaml to tmuxp yaml config
 
-        use check_consistency to assert against
-        '''
+        use validate_schema to assert against
+        """
         pass
 
 
-class Teamocil2Test(unittest.TestCase):
+class Teamocil2Test(TestCase):
 
     teamocil_yaml = """\
     windows:
@@ -154,14 +153,14 @@ class Teamocil2Test(unittest.TestCase):
             self.tmuxp_dict
         )
 
-        config.check_consistency(
+        config.validate_schema(
             config.import_teamocil(
                 self.teamocil_dict
             )
         )
 
 
-class Teamocil3Test(unittest.TestCase):
+class Teamocil3Test(TestCase):
 
     teamocil_yaml = """\
     windows:
@@ -241,14 +240,14 @@ class Teamocil3Test(unittest.TestCase):
             self.tmuxp_dict
         )
 
-        config.check_consistency(
+        config.validate_schema(
             config.import_teamocil(
                 self.teamocil_dict
             )
         )
 
 
-class Teamocil4Test(unittest.TestCase):
+class Teamocil4Test(TestCase):
 
     teamocil_yaml = """\
     windows:
@@ -294,21 +293,21 @@ class Teamocil4Test(unittest.TestCase):
             self.tmuxp_dict
         )
 
-        config.check_consistency(
+        config.validate_schema(
             config.import_teamocil(
                 self.teamocil_dict
             )
         )
 
 
-class TeamocilLayoutsTest(unittest.TestCase):
+class TeamocilLayoutsTest(TestCase):
 
-    '''
+    """
 
     https://github.com/remiprev/teamocil/blob/master/spec/fixtures/layouts.yml
 
     LICENSE: https://github.com/remiprev/teamocil/blob/master/LICENSE
-    '''
+    """
 
     teamocil_yaml = """\
     # Simple two windows layout
@@ -669,7 +668,7 @@ class TeamocilLayoutsTest(unittest.TestCase):
             self.two_windows
         )
 
-        config.check_consistency(
+        config.validate_schema(
             config.import_teamocil(
                 self.teamocil_dict['two-windows']
             )
@@ -682,7 +681,7 @@ class TeamocilLayoutsTest(unittest.TestCase):
             self.two_windows_with_filters
         )
 
-        config.check_consistency(
+        config.validate_schema(
             config.import_teamocil(
                 self.teamocil_dict['two-windows-with-filters']
             )
@@ -695,7 +694,7 @@ class TeamocilLayoutsTest(unittest.TestCase):
             self.two_windows_with_custom_command_options
         )
 
-        config.check_consistency(
+        config.validate_schema(
             config.import_teamocil(
                 self.teamocil_dict['two-windows-with-custom-command-options']
             )
@@ -707,15 +706,12 @@ class TeamocilLayoutsTest(unittest.TestCase):
             ),
             self.three_windows_within_a_session
         )
-        config.check_consistency(
+        config.validate_schema(
             config.import_teamocil(
                 self.teamocil_dict['three-windows-within-a-session']
             )
         )
 
-        ''' this configuration contains multiple sessions in a single file.
+        """ this configuration contains multiple sessions in a single file.
             tmuxp can split them into files, proceed?
-        '''
-
-if __name__ == '__main__':
-    unittest.main()
+        """

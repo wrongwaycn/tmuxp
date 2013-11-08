@@ -14,7 +14,6 @@ import sys
 import argparse
 import argcomplete
 import logging
-import pkg_resources
 import kaptan
 from . import log, util, exc, WorkspaceBuilder, Server, config
 from .util import ascii_lowercase, input
@@ -22,7 +21,15 @@ from .workspacebuilder import freeze
 from distutils.util import strtobool
 
 
-__version__ = pkg_resources.require("tmuxp")[0].version
+import re
+VERSIONFILE = os.path.join(os.path.abspath(os.path.dirname(__file__)), '__init__.py')
+verstrline = open(VERSIONFILE, "rt").read()
+VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"
+mo = re.search(VSRE, verstrline, re.M)
+if mo:
+    __version__ = mo.group(1)
+#import pkg_resources
+#__version__ = pkg_resources.require("tmuxp")[0].version
 
 logger = logging.getLogger(__name__)
 
@@ -230,7 +237,7 @@ def load_workspace(config_file, args):
     :param type: string
 
     """
-    logger.info('building %s.' % config_file)
+    logger.info('Loading %s.' % config_file)
 
     sconfig = kaptan.Kaptan()
     sconfig = sconfig.import_config(config_file).get()
@@ -266,14 +273,14 @@ def load_workspace(config_file, args):
 
         builder.session.attach_session()
     except exc.TmuxSessionExists as e:
-        if prompt_yes_no(e.message + ' Attach?'):
+        if prompt_yes_no('%s Attach?' % e):
             if 'TMUX' in os.environ:
                 builder.session.switch_client()
 
             else:
                 builder.session.attach_session()
         return
-    except Exception as e:
+    except exc.TmuxpException as e:
         import traceback
 
         print(traceback.format_exc())
@@ -367,7 +374,7 @@ def command_load(args):
         startup(config_dir)
         configs_in_user = config.in_dir(config_dir)
         configs_in_cwd = config.in_cwd()
-        print(configs_in_cwd)
+
         sys.exit()
 
         output = ''
@@ -385,6 +392,7 @@ def command_load(args):
             )
 
         print(output)
+        return
 
     elif args.config:
         if '.' == args.config:
@@ -397,9 +405,7 @@ def command_load(args):
             configfile = args.config
         file_user = os.path.join(config_dir, configfile)
         file_cwd = os.path.join(cwd_dir, configfile)
-        print(file_user)
-        print(file_cwd)
-        print(cwd_dir)
+
         if os.path.exists(file_cwd) and os.path.isfile(file_cwd):
             print('load %s' % file_cwd)
             load_workspace(file_cwd, args)
@@ -588,7 +594,7 @@ def command_convert(args):
 
     try:
         configfile = args.config
-    except Exception:
+    except exc.TmuxpException:
         print('Please enter a config')
 
     file_user = os.path.join(config_dir, configfile)
@@ -646,9 +652,9 @@ def command_attach_session(args):
         session = next((s for s in t.sessions if s.get(
             'session_name') == ctext), None)
         if not session:
-            raise Exception('Session not found.')
-    except Exception as e:
-        print(e.message)
+            raise exc.TmuxpException('Session not found.')
+    except exc.TmuxpException as e:
+        print(e)
         return
 
     if 'TMUX' in os.environ:
@@ -674,181 +680,60 @@ def command_kill_session(args):
         session = next((s for s in t.sessions if s.get(
             'session_name') == ctext), None)
         if not session:
-            raise Exception('Session not found.')
-    except Exception as e:
-        print(e.message)
+            raise exc.TmuxpException('Session not found.')
+    except exc.TmuxpException as e:
+        print(e)
         return
 
     try:
         session.kill_session()
         print("Killed session %s." % ctext)
-    except Exception as e:
+    except exc.TmuxpException as e:
         logger.error(e)
-
 
 def get_parser():
     """Return :py:class:`argparse.ArgumentParser` instance for CLI."""
 
-    parser = argparse.ArgumentParser(
-        description='''\
-        Launch tmux workspace. Help documentation: <http://tmuxp.rtfd.org>.
-        ''',
-    )
-
     server_parser = argparse.ArgumentParser(add_help=False)
 
-    server_parser.add_argument('--log-level', dest='log_level', default='INFO',
-                        metavar='log-level',
-                        help='Log level e.g. INFO, DEBUG, ERROR')
+    # server_parser.add_argument(
+        # '--log-level',
+        # dest='log_level',
+        # default='INFO',
+        # metavar='log-level',
+        # help='Log level e.g. INFO, DEBUG, ERROR'
+    # )
 
-    server_parser.add_argument('-L', dest='socket_name', default=None,
-                        help='socket name of tmux server. Same as tmux.',
-                        metavar='socket-name')
-
-    server_parser.add_argument('-S', dest='socket_path', default=None,
-                        help='socket path of tmux server. Same as tmux.',
-                        metavar='socket-path')
-
-    subparsers = parser.add_subparsers(title='commands',
-                                       description='valid commands',
-                                       help='additional help')
-
-
-    kill_session = subparsers.add_parser('kill-session')
-    kill_session.set_defaults(callback=command_kill_session)
-
-    kill_session.add_argument(
-        dest='session_name',
-        type=str,
-        nargs='+',
+    server_parser.add_argument(
+        '-L', dest='socket_name',
         default=None,
-        help='Name of session',
-    ).completer = SessionCompleter
-
-    attach_session = subparsers.add_parser(
-        'attach-session',
-        parents=[server_parser]
-    )
-    attach_session.set_defaults(callback=command_attach_session)
-
-    attach_session.add_argument(
-        dest='session_name',
-        nargs='+',
-        type=str,
-        help='Name of session',
-    ).completer = SessionCompleter
-
-    freeze = subparsers.add_parser(
-        'freeze',
-        parents=[server_parser]
-    )
-    freeze.set_defaults(callback=command_freeze)
-
-    freeze.add_argument(
-        dest='session_name',
-        type=str,
-        nargs='+',
-        help='Name of session',
-    ).completer = SessionCompleter
-
-    load = subparsers.add_parser(
-        'load',
-        parents=[server_parser]
+        help=u'tmux服务器的socket名，与tmux相同。',
+        metavar='socket-name'
     )
 
-    loadgroup = load.add_mutually_exclusive_group(required=True)
-    loadgroup.add_argument(
-        '--list', dest='list', action='store_true',
-        help='List config files available',
-    )
-
-    loadgroup.add_argument(
-        dest='config',
-        type=str,
-        nargs='?',
-        help='''\
-        List of config files to launch session from.
-
-        Checks current working directory (%s) then $HOME/.tmuxp directory (%s).
-
-            $ tmuxp .
-
-        will check launch a ~/.pullv.yaml / ~/.pullv.json from the cwd.
-        will also check for any ./*.yaml and ./*.json.
-        ''' % (cwd_dir + '/', config_dir),
-    ).completer = ConfigFileCompleter(allowednames=('.yaml', '.json'), directories=False)
-    load.set_defaults(callback=command_load)
-
-    convert = subparsers.add_parser('convert')
-
-    convert.add_argument(
-        dest='config',
-        type=str,
+    server_parser.add_argument(
+        '-S',
+        dest='socket_path',
         default=None,
-        help='''\
-        Checks current working directory (%s) then $HOME/.tmuxp directory (%s).
-
-            $ tmuxp .
-
-        will check launch a ~/.pullv.yaml / ~/.pullv.json from the cwd.
-        will also check for any ./*.yaml and ./*.json.
-        ''' % (cwd_dir + '/', config_dir)
-    ).completer = ConfigFileCompleter(allowednames=('.yaml', '.json'), directories=False)
-
-    convert.set_defaults(callback=command_convert)
-
-    importparser = subparsers.add_parser('import')
-    importsubparser = importparser.add_subparsers(title='commands',
-                                                  description='valid commands',
-                                                  help='additional help')
-
-    import_teamocil = importsubparser.add_parser('teamocil')
-
-    import_teamocilgroup = import_teamocil.add_mutually_exclusive_group(
-        required=True)
-    import_teamocilgroup.add_argument(
-        '--list', dest='list', action='store_true',
-        help='List yaml configs in ~/.teamocil and current working directory.'
+        help=u'tmux服务器的socket路径，与tmux相同。',
+        metavar='socket-path'
     )
 
-    import_teamocilgroup.add_argument(
-        dest='config',
-        type=str,
-        nargs='?',
-        help='''\
-        Checks current ~/.teamocil and current directory for yaml files.
-        '''
-    ).completer = TeamocilCompleter(allowednames=('.yml'), directories=False)
-    import_teamocil.set_defaults(callback=command_import_teamocil)
-
-    import_tmuxinator = importsubparser.add_parser('tmuxinator')
-
-    import_tmuxinatorgroup = import_tmuxinator.add_mutually_exclusive_group(
-        required=True)
-    import_tmuxinatorgroup.add_argument(
-        '--list', dest='list', action='store_true',
-        help='List yaml configs in ~/.tmuxinator and current working directory.'
+    parser = argparse.ArgumentParser(
+        description='Launch tmux workspace. '
+                    'Help documentation: <http://tmuxp.rtfd.org>.',
+        parents=[server_parser]
     )
 
-    import_tmuxinatorgroup.add_argument(
-        dest='config',
-        type=str,
-        nargs='?',
-        help='''\
-        Checks current ~/.tmuxinator and current directory for yaml files.
-        '''
-    ).completer = TmuxinatorCompleter(allowednames=('.yml'), directories=False)
-
-    import_tmuxinator.set_defaults(callback=command_import_tmuxinator)
-
-    colorsgroup = parser.add_mutually_exclusive_group()
+    client_parser = argparse.ArgumentParser(add_help=False)
+    colorsgroup = client_parser.add_mutually_exclusive_group()
 
     colorsgroup.add_argument(
         '-2',
         dest='colors',
         action='store_const',
         const=256,
-        help='Force tmux to assume the terminal supports 256 colours.',
+        help=u'强迫tmux的终端支持256色。',
     )
 
     colorsgroup.add_argument(
@@ -856,10 +741,151 @@ def get_parser():
         dest='colors',
         action='store_const',
         const=88,
-        help='Like -2, but indicates that the terminal supports 88 colours.',
+        help=u'与-2类似，但是只支持88色。',
     )
 
     parser.set_defaults(colors=None)
+
+    subparsers = parser.add_subparsers(
+        title='commands',
+        description='valid commands',
+    )
+
+    kill_session = subparsers.add_parser(
+        'kill-session',
+        parents=[server_parser],
+        help='Kill tmux session by name.'
+    )
+    kill_session.set_defaults(callback=command_kill_session)
+
+    kill_session.add_argument(
+        dest='session_name',
+        type=str,
+        nargs='+',
+        default=None,
+        help=u'会话(session)名称',
+    ).completer = SessionCompleter
+
+    attach_session = subparsers.add_parser(
+        'attach-session',
+        parents=[server_parser, client_parser],
+        help='If run from outside tmux, create a new client in the current '
+             'terminal and attach it. If used from inside, switch the current '
+             'client.'
+    )
+    attach_session.set_defaults(callback=command_attach_session)
+
+    attach_session.add_argument(
+        dest='session_name',
+        nargs='+',
+        type=str,
+        help=u'会话(session)名称',
+    ).completer = SessionCompleter
+
+    freeze = subparsers.add_parser(
+        'freeze',
+        parents=[server_parser],
+        help='Create a snapshot of a tmux session and save it to JSON or YAML.'
+    )
+    freeze.set_defaults(callback=command_freeze)
+
+    freeze.add_argument(
+        dest='session_name',
+        type=str,
+        nargs='+',
+        help=u'会话(Session)名称',
+    ).completer = SessionCompleter
+
+    load = subparsers.add_parser(
+        'load',
+        parents=[server_parser, client_parser],
+        help='Load a configuration from file. Attach the session. If session '
+             'already exists, offer to attach instead.'
+    )
+
+    loadgroup = load.add_mutually_exclusive_group(required=True)
+    loadgroup.add_argument(
+        '--list', dest='list', action='store_true',
+        help=u'列出可用的配置文件',
+    )
+
+    loadgroup.add_argument(
+        dest='config',
+        type=str,
+        nargs='?',
+        help=u'列出工作目录和配置文件夹下可用的配置文件。'
+    ).completer = ConfigFileCompleter(allowednames=('.yaml', '.json'), directories=False)
+    load.set_defaults(callback=command_load)
+
+    convert = subparsers.add_parser(
+        'convert',
+        help='Convert tmuxp config between YAML and JSON format.'
+    )
+
+    convert.add_argument(
+        dest='config',
+        type=str,
+        default=None,
+        help=u'配置文件的绝对/相对路径。'
+    ).completer = ConfigFileCompleter(allowednames=('.yaml', '.json'), directories=False)
+
+    convert.set_defaults(callback=command_convert)
+
+    importparser = subparsers.add_parser(
+        'import',
+        help='Import configurations from teamocil and tmuxinator.'
+    )
+    importsubparser = importparser.add_subparsers(
+        title='commands',
+        description='valid commands',
+        help='additional help'
+    )
+
+    import_teamocil = importsubparser.add_parser(
+        'teamocil',
+        help="Parse teamocil configurations into tmuxp format"
+    )
+
+    import_teamocilgroup = import_teamocil.add_mutually_exclusive_group(
+        required=True
+    )
+    import_teamocilgroup.add_argument(
+        '--list', dest='list', action='store_true',
+        help=u'列出 ~/.teamocil 和当前工作目录下的配置文件。'
+    )
+
+    import_teamocilgroup.add_argument(
+        dest='config',
+        type=str,
+        nargs='?',
+        help=u'''\
+        在 ~/.teamocil 和当前目录下查找yaml文件
+        '''
+    ).completer = TeamocilCompleter(allowednames=('.yml'), directories=False)
+    import_teamocil.set_defaults(callback=command_import_teamocil)
+
+    import_tmuxinator = importsubparser.add_parser(
+        'tmuxinator',
+        help="Parse teamocil configurations into tmuxp format"
+    )
+
+    import_tmuxinatorgroup = import_tmuxinator.add_mutually_exclusive_group(
+        required=True)
+    import_tmuxinatorgroup.add_argument(
+        '--list', dest='list', action='store_true',
+        help=u'列出 ~/.tmuxinator 和当前工作目录下的配置文件。'
+    )
+
+    import_tmuxinatorgroup.add_argument(
+        dest='config',
+        type=str,
+        nargs='?',
+        help=u'''\
+        在 ~/.tmuxinator 和当前目录下查找yaml文件
+        '''
+    ).completer = TmuxinatorCompleter(allowednames=('.yml'), directories=False)
+
+    import_tmuxinator.set_defaults(callback=command_import_tmuxinator)
 
     # http://stackoverflow.com/questions/8521612/argparse-optional-subparser
     parser.add_argument(
@@ -879,11 +905,11 @@ def main():
 
     args = parser.parse_args()
 
-    setup_logger(level=args.log_level.upper())
+    setup_logger(level=args.log_level.upper() if 'log_level' in args else 'INFO')
 
     try:
-        util.version()
-    except Exception as e:
+        util.has_required_tmux_version()
+    except exc.TmuxpException as e:
         logger.error(e)
         sys.exit()
 

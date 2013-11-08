@@ -81,11 +81,11 @@ class Server(TmuxRelationalObject):
 
         args = list(args)
         if self.socket_name:
-            args.insert(0, '-L{}'.format(self.socket_name))
+            args.insert(0, '-L{0}'.format(self.socket_name))
         if self.socket_path:
-            args.insert(0, '-S{}'.format(self.socket_path))
+            args.insert(0, '-S{0}'.format(self.socket_path))
         if self.config_file:
-            args.insert(0, '-f{}'.format(self.config_file))
+            args.insert(0, '-f{0}'.format(self.config_file))
         if self.colors:
             if self.colors == 256:
                 args.insert(0, '-2')
@@ -121,12 +121,12 @@ class Server(TmuxRelationalObject):
         )
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
         else:
             session_info = proc.stdout[0]
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
         sformats = formats.SESSION_FORMATS
         tmux_formats = ['#{%s}' % format for format in sformats]
@@ -145,11 +145,7 @@ class Server(TmuxRelationalObject):
 
     @property
     def _sessions(self):
-        """Return list of the server's sessions as :py:obj:`dict`.
-
-        :rtype: list
-
-        """
+        """Property / alias to return :meth:`~._list_sessions`."""
 
         return self._list_sessions()
 
@@ -165,7 +161,7 @@ class Server(TmuxRelationalObject):
 
     @property
     def sessions(self):
-        """Return a :py:obj:`list` of the server's :class:`Session` objects."""
+        """Property / alias to return :meth:`~.list_sessions`."""
         return self.list_sessions()
     #: Alias of :attr:`sessions`.
     children = sessions
@@ -192,7 +188,7 @@ class Server(TmuxRelationalObject):
         )
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
         windows = proc.stdout
 
@@ -252,7 +248,7 @@ class Server(TmuxRelationalObject):
         )
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
         panes = proc.stdout
 
@@ -342,7 +338,7 @@ class Server(TmuxRelationalObject):
         proc = self.tmux('kill-session', '-t%s' % target_session)
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
         return self
 
@@ -357,7 +353,7 @@ class Server(TmuxRelationalObject):
         proc = self.tmux('switch-client', '-t%s' % target_session)
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
     def attach_session(self, target_session=None):
         """``$ tmux attach-session`` aka alias: ``$ tmux attach``.
@@ -372,7 +368,7 @@ class Server(TmuxRelationalObject):
         proc = self.tmux('attach-session', *tmux_args)
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
     def new_session(self,
                     session_name=None,
@@ -444,7 +440,7 @@ class Server(TmuxRelationalObject):
         )
 
         if proc.stderr:
-            raise Exception(proc.stderr)
+            raise exc.TmuxpException(proc.stderr)
 
         session = proc.stdout[0]
 
