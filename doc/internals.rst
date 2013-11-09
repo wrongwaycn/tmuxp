@@ -1,20 +1,21 @@
 .. _Internals:
 
-===================
-内部结构(Internals)
-===================
+=========
+Internals
+=========
 
 .. seealso:: :ref:`api`
 
 .. module:: tmuxp
 
-tmuxp是一个建立在tmux命令行参数之上的 *抽象层* 。
+tmuxp is an *abstraction layer* against tmux' command line arguments.
 
-:class:`util.TmuxRelationalObject` 的角色类似一个容器，用以存放
- :class:`Server`, :class:`Session`, :class:`Window` 以及 :class:`Pane` 之间的关联。
+:class:`util.TmuxRelationalObject` acts as a container to connect the
+relations of :class:`Server`, :class:`Session`, :class:`Window` and
+:class:`Pane`.
 
 ======================== ======================= =========================
-对象(object)             子级(child)             父级(parent)                 
+Object                   Child                   Parent
 ======================== ======================= =========================
 :class:`Server`          :class:`Session`        None
 :class:`Session`         :class:`Window`         :class:`Server`
@@ -22,16 +23,20 @@ tmuxp是一个建立在tmux命令行参数之上的 *抽象层* 。
 :class:`Pane`            None                    :class:`Window`
 ======================== ======================= =========================
 
-事实上，tmux允许多个服务(server)运行在同一个系统上。每个服务(server)各自使用一个socket。
-如果没有指定服务(server)，tmux会自动启动一个默认服务(server)并与其通讯。
+Internally, tmux allows multiple servers to be ran on a system. Each one
+uses a socket. Most users worry since tmux will communicate to a default
+server automatically. If one doesn't exist, tmux does it for you.
 
-一个服务(server)可以拥有多个会话(session)，可以使用 ``Ctrl-a s`` 在会话(session)间切换。
+A server can have multiple sessions. ``Ctrl-a s`` can be used to switch
+between sessions running on the server.
 
-会话(session)，窗口(window)和窗格(pane)都有各自唯一的标识(``session_id``, ``window_id``, ``pane_id`` )，
- :class:`util.TmuxMappingObject` 将利用这些标识来查找保存在 :class:`Server` 对象中的数据。
+Sessions, Windows and Panes all have their own unique identifier for
+internal purposes. :class:`util.TmuxMappingObject` will make use of the
+unique identifiers (``session_id``, ``window_id``, ``pane_id`` ) to look
+up the data stored in the :class:`Server` object.
 
 ======================== ======================= =========================
-对象(Object)             前缀(Prefix)            示例(Example)
+Object                   Prefix                  Example
 ======================== ======================= =========================
 :class:`Server`          N/A                     N/A, uses ``socket-name``
                                                  and ``socket-path``
@@ -40,8 +45,8 @@ tmuxp是一个建立在tmux命令行参数之上的 *抽象层* 。
 :class:`Pane`            ``%``                   ``%5433``
 ======================== ======================= =========================
 
-Tmux与Pythonics风格的相似性(Similarities to Tmux and Pythonics)
----------------------------------------------------------------
+Similarities to Tmux and Pythonics
+----------------------------------
 
 tmuxp is was built in the spirit of understanding how tmux operates
 and how python objects and tools can abstract the API's in a pleasant way.

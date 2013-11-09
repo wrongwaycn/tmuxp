@@ -1,13 +1,14 @@
 .. _examples:
 
-==============
-示例(Examples)
-==============
+========
+Examples
+========
 
-简洁的语法(Short hand / inline)
-----------------------------------------
+Short hand / inline
+-------------------
 
-tmuxp为那些希望配置文件更加精简的用户提供了一套极为简洁语法。
+tmuxp has a short-hand syntax to for those who wish to keep their configs
+punctual.
 
 .. sidebar:: short hand
 
@@ -37,12 +38,13 @@ JSON
 .. literalinclude:: ../examples/shorthands.json
     :language: json
 
+Blank panes
+-----------
 
-空窗格(Blank panes)
--------------------
+No need to repeat ``pwd`` or a dummy command. A ``null``, ``'blank'``,
+``'pane'`` are valid.
 
-无须重复 ``pwd`` 和其他任何命令。 可以使用 ``null``, ``'blank'``, ``'pane'`` 中任何一个。
-注意 ``''`` 被视为空回车。
+Note ``''`` counts as an empty carriage return.
 
 YAML
 """"
@@ -56,10 +58,10 @@ JSON
 .. literalinclude:: ../examples/blank-panes.json
     :language: json
 
-设置起始目录(Start Directory)
------------------------------
+Start Directory
+---------------
 
-等同于 ``tmux new-window -c <start-directory>``.
+Equivalent to ``tmux new-window -c <start-directory>``.
 
 YAML
 """"
@@ -73,8 +75,8 @@ JSON
 .. literalinclude:: ../examples/start-directory.json
     :language: json
 
-分割出两个窗格(2 split panes)
------------------------------
+2 split panes
+-------------
 
 .. sidebar:: 2 pane
 
@@ -102,20 +104,20 @@ JSON - Short form
 .. literalinclude:: ../examples/2-pane-vertical.json
     :language: json
 
-YAML - 圣诞树结构(Christmas Tree)
-"""""""""""""""""""""""""""""""""
+YAML - Christmas Tree
+"""""""""""""""""""""
 
 .. literalinclude:: ../examples/2-pane-vertical-long.yaml
     :language: yaml
 
-JSON - 圣诞树结构(Christmas Tree)
-"""""""""""""""""""""""""""""""""
+JSON - Christmas Tree
+"""""""""""""""""""""
 
 .. literalinclude:: ../examples/2-pane-vertical-long.json
     :language: json
 
-三个面板(3 panes)
------------------
+3 panes
+-------
 
 .. sidebar:: 3 panes
 
@@ -143,8 +145,8 @@ JSON
 .. literalinclude:: ../examples/3-pane.json
     :language: json
 
-四个面板(4 panes)
------------------
+4 panes
+-------
 
 .. sidebar:: 4 panes
 
@@ -173,8 +175,8 @@ JSON
     :language: json
 
 
-自动重命名(Automatic Rename)
-----------------------------
+Automatic Rename
+----------------
 
 YAML
 """"
@@ -188,9 +190,8 @@ JSON
 .. literalinclude:: ../examples/automatic-rename.json
     :language: json
 
-
-定制主面板高度(Main pane height)
---------------------------------
+Main pane height
+----------------
 
 YAML
 """"
@@ -204,15 +205,11 @@ JSON
 .. literalinclude:: ../examples/main-pane-height.json
     :language: json
 
-
-
-
-
-定制高级开发环境(Super-advanced dev environment)
-------------------------------------------------
+Super-advanced dev environment
+------------------------------
 
 .. seealso::
-    详见 :ref:`developing` 中的 :ref:`tmuxp developer config`
+    :ref:`tmuxp developer config` in the :ref:`developing` section.
 
 YAML
 """"
@@ -227,16 +224,16 @@ JSON
     :language: json
 
 
-
-功夫(Kung fu)
--------------
+Kung fu
+-------
 
 .. note::
 
-    tmuxp的会话(session)是可以用python脚本进行定制的。第一个方法是使用 :ref:`API` 中的方法
-    第二个方法是给 :class:`tmuxp.WorkspaceBuilder` 传递一个符合规格的 :py:obj:`dict` 字典。
-    详见 :meth:`tmuxp.config.validate_schema` 。
+    tmuxp sessions can be scripted in python. The first way is to use the
+    ORM in the :ref:`API`. The second is to pass a :py:obj:`dict` into
+    :class:`tmuxp.WorkspaceBuilder` with a correct schema. See:
+    :meth:`tmuxp.config.validate_schema`.
 
-tmuxp需要您的指点，欢迎您在 `github`_ 上赐教。
+Add yours? Submit a pull request to the `github`_ site!
 
 .. _github: https://github.com/tony/tmuxp

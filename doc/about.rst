@@ -2,92 +2,102 @@
 
 .. _about:
 
-===========
-介绍(About)
-===========
+=====
+About
+=====
 
-tmuxp帮助您管理您的文本工作区。
+tmuxp helps you manage tmux workspaces.
 
-事实上，tmuxp也是一个构建于tmux之上的对象关系映射(ORM)。
-终端用户可以使用YAML, JSON以及 :py:obj:`dict` 字典配置项来启动工作区
-（就如同 `tmuxinator`_ 和 `teamocil`_ 所做的那样）。
+tmuxp is build upon an object relational mapper for tmux. End-users may
+use YAML, JSON and :py:obj:`dict` configurations to launch workspaces like
+`tmuxinator`_ and `teamocil`_.
 
-您可以跳过本章，直接查看 :ref:`quickstart` 和 :ref:`examples` 。
+To jump right in, see :ref:`quickstart` and :ref:`examples`.
 
-想深入了解更多或参与其中，不妨看看 :ref:`api` 和 :ref:`developing` 。
+Interested in some kung-fu or joining the effort? :ref:`api` and
+:ref:`developing`
 
-该开源软件遵守 `BSD-licensed`_ 许可，代码托管在 http://github.com/tony/tmuxp.
+License  is `BSD-licensed`_. Code can be found at github at
+http://github.com/tony/tmuxp.
 
-
-与 tmuxinator / teamocil 的异同(Differences from tmuxinator / teamocil)
------------------------------------------------------------------------
+Differences from tmuxinator / teamocil
+--------------------------------------
 
 .. note::
 
-    如果您是 teamocil / tmuxinator 的用户，想更加详细地比较异同，
-    不妨在github上 `编辑该页面`_ 。
+    If you use teamocil / tmuxinator and can clarify or add differences,
+    please free to `edit this page`_ on github.
 
-相似之处(Similarities)
-""""""""""""""""""""""
+Similarities
+""""""""""""
 
-**加载会话** 都是根据配置文件中加载tmux会话(session)
+**Load sessions** Loads tmux sessions from config
 
-**YAML** 支持YAML格式
+**YAML** Supports YAML format
 
-**简洁的语法** 都支持在单独的命令中使用简短标记。
+**Inlining / shorthand configuration** All three support short-hand and
+simplified markup for panes that have one command.
 
-不足之处(Missing)
-"""""""""""""""""
+Missing
+"""""""
 
-**稳定性Stability** 现阶段，tmuxinator 和 teamocil 相比于tmuxp要更加稳定，也更易于扩展开发。
+**Stability** tmuxinator and teamocil are far more stable and
+well-developed than tmuxp.
 
-**ERB / 模板支持** teamocil 支持 `ERB`_ 标记。
+**ERB / Template support** teamocil supports `ERB`_ markup.
 
-**版本支持** tmuxp 只支持 ``tmux >= 1.8`` ，Teamocil 和
-tmuxinator 可以支持更早期版本。
+**Version support** tmuxp only supports ``tmux >= 1.8``. Teamocil and
+tmuxinator may have support for earlier versions.
 
-不同之处(Differences)
-"""""""""""""""""""""
+Differences
+"""""""""""
 
-**开发所用语言** tmuxp 使用 python。而 teamocil 和 tmuxinator 则使用 ruby。
+**Programming Language** python. teamocil and tmuxinator uses ruby.
 
-**工作区搭建过程Workspace building process** teamocil 和 tmuxinator 直接通过shell命令行处理配置项。
-而 tmuxp 则是通过ORM层来处理配置项。
+**Workspace building process** teamocil and tmuxinator process configs
+directly shell commands. tmuxp processes configuration via ORM layer.
 
-其他特性(Additional Features)
------------------------------
+Additional Features
+-------------------
 
-**CLI** tmuxp的命令行接口支持tab补全，可以关闭和附加到会话(session)。
-详见 :ref:`commands` 。
+**CLI** tmuxp's CLI can attach and kill sessions with tab-completion
+support. See :ref:`commands`.
 
-**Import config导入配置文件** 可以从 Teamocil / Tmuxinator [1]_ 导入配置文件。 
-详见 :ref:`cli_import` 。
+**Import config** import configs from Teamocil / Tmuxinator [1]_. See
+:ref:`cli_import`.
 
-**冻结会话** 支持会话(session)冻结，可以保存为YAML和JSON格式 [1]_ 。 详见 :ref:`cli_freeze` 。
+**Session freezing** Supports session freezing into YAML and JSON
+format [1]_. See :ref:`cli_freeze`.
 
-**JSON配置** 支持JSON配置。 详见 :ref:`Examples` 。
+**JSON config** JSON config support. See :ref:`Examples`.
 
-**基于ORM的API** - 利用 tmux(>=1.8) 的唯一ID来标识窗格(pane)，窗口(windows)和会话(session)，
-以创建关联视图的tumx对象：
-:class:`Server` , :class:`Session` , :class:`Window` , :class:`Pane` 。
-详见 :ref:`Internals` 。
+**ORM-based API** - Utilitizes tmux >= 1.8's unique ID's for panes,
+windows and sessions to create an object relational view of the tmux
+:class:`Server` and its' :class:`Session`, :class:`Window`, :class:`Pane`.
+See :ref:`Internals`.
 
-**转换** ``$ tmuxp convert <filename>`` 可以互相转换JSON/YAML格式。
+**Conversion** ``$ tmuxp convert <filename>`` can convert files to and
+from JSON and YAML.
 
-.. [1] 冻结或导入会话是一个保存当前进度的好方法，有时可能要微调一下 - 毕竟没什么能代替一个用心制作的配置文件。
+.. [1] While freezing and importing sessions is a great way to save time, 
+       tweaking will probably be required - There is no substitute to a
+       config made with love.
 
-细微改动(Minor tweaks)
-----------------------
+Minor tweaks
+------------
 
-- 编写最新版本tmux下的单元测试，以测试tmux的会话(session)，窗口(window)和窗格(pane)的有效性。详见 :ref:`travis` 。
-- 在tmux下可以加载或切换到新会话(session)。
-- 加载配置文件可以恢复会话(session)。
-- 可在 virtualenv / rvm / 其他命令下使用。
-- 使用 ``$ tmuxp load /full/file/path.json`` 可以从任何位置加载配置文件。
-- 使用 ``$ tmuxp load .`` 可以在当前目录下载入配置文件 ``.tmuxp.yaml`` 和 ``.tmuxp.json`` 。
-- ``$ tmuxp -2``, ``$ tmuxp -8`` 强行指定 :term:`tmux(1)` 的配色。
-- ``$ tmuxp -L<socket-name>``, ``$ tmuxp -S<socket-path>`` 可支持socket，
-  ``$ tmuxp -f<config-file>`` 可加载配置文件
+- Unit tests against live tmux version to test statefulness of tmux
+  sessions, windows and panes. See :ref:`travis`.
+- Load + switch to new session from inside tmux.
+- Resume session if config loaded.
+- Pre-commands virtualenv / rvm / any other commands.
+- Load config from anywhere ``$ tmuxp load /full/file/path.json``.
+- Load config ``.tmuxp.yaml`` or ``.tmuxp.json`` from current working
+  directory with ``$ tmuxp load .``.
+- ``$ tmuxp -2``, ``$ tmuxp -8`` for forcing term colors a la
+  :term:`tmux(1)`.
+- ``$ tmuxp -L<socket-name>``, ``$ tmuxp -S<socket-path>`` for sockets and
+  ``$ tmuxp -f<config-file>`` for config file.
 
 .. _attempt at 1.7 test: https://travis-ci.org/tony/tmuxp/jobs/12348263
 .. _kaptan: https://github.com/emre/kaptan
@@ -95,5 +105,5 @@ tmuxinator 可以支持更早期版本。
 .. _BSD-licensed: http://opensource.org/licenses/BSD-2-Clause
 .. _tmuxinator: https://github.com/aziz/tmuxinator
 .. _teamocil: https://github.com/remiprev/teamocil
-.. _编辑该页面: https://github.com/tony/tmuxp/edit/master/doc/about.rst
 .. _ERB: http://ruby-doc.org/stdlib-2.0.0/libdoc/erb/rdoc/ERB.html
+.. _edit this page: https://github.com/tony/tmuxp/edit/master/doc/about.rst

@@ -707,7 +707,7 @@ def get_parser():
     server_parser.add_argument(
         '-L', dest='socket_name',
         default=None,
-        help=u'tmux服务器的socket名，与tmux相同。',
+        help='socket name of tmux server. Same as tmux.',
         metavar='socket-name'
     )
 
@@ -715,7 +715,7 @@ def get_parser():
         '-S',
         dest='socket_path',
         default=None,
-        help=u'tmux服务器的socket路径，与tmux相同。',
+        help='socket path of tmux server. Same as tmux.',
         metavar='socket-path'
     )
 
@@ -733,7 +733,7 @@ def get_parser():
         dest='colors',
         action='store_const',
         const=256,
-        help=u'强迫tmux的终端支持256色。',
+        help='Force tmux to assume the terminal supports 256 colours.',
     )
 
     colorsgroup.add_argument(
@@ -741,7 +741,7 @@ def get_parser():
         dest='colors',
         action='store_const',
         const=88,
-        help=u'与-2类似，但是只支持88色。',
+        help='Like -2, but indicates that the terminal supports 88 colours.',
     )
 
     parser.set_defaults(colors=None)
@@ -763,7 +763,7 @@ def get_parser():
         type=str,
         nargs='+',
         default=None,
-        help=u'会话(session)名称',
+        help='Name of session',
     ).completer = SessionCompleter
 
     attach_session = subparsers.add_parser(
@@ -779,7 +779,7 @@ def get_parser():
         dest='session_name',
         nargs='+',
         type=str,
-        help=u'会话(session)名称',
+        help='Name of session',
     ).completer = SessionCompleter
 
     freeze = subparsers.add_parser(
@@ -793,7 +793,7 @@ def get_parser():
         dest='session_name',
         type=str,
         nargs='+',
-        help=u'会话(Session)名称',
+        help='Name of session',
     ).completer = SessionCompleter
 
     load = subparsers.add_parser(
@@ -806,14 +806,14 @@ def get_parser():
     loadgroup = load.add_mutually_exclusive_group(required=True)
     loadgroup.add_argument(
         '--list', dest='list', action='store_true',
-        help=u'列出可用的配置文件',
+        help='List config files available',
     )
 
     loadgroup.add_argument(
         dest='config',
         type=str,
         nargs='?',
-        help=u'列出工作目录和配置文件夹下可用的配置文件。'
+        help='List config available in working directory and config folder.'
     ).completer = ConfigFileCompleter(allowednames=('.yaml', '.json'), directories=False)
     load.set_defaults(callback=command_load)
 
@@ -826,7 +826,7 @@ def get_parser():
         dest='config',
         type=str,
         default=None,
-        help=u'配置文件的绝对/相对路径。'
+        help='Absolute or relative path to config file.'
     ).completer = ConfigFileCompleter(allowednames=('.yaml', '.json'), directories=False)
 
     convert.set_defaults(callback=command_convert)
@@ -851,15 +851,15 @@ def get_parser():
     )
     import_teamocilgroup.add_argument(
         '--list', dest='list', action='store_true',
-        help=u'列出 ~/.teamocil 和当前工作目录下的配置文件。'
+        help='List configs in ~/.teamocil and current working directory.'
     )
 
     import_teamocilgroup.add_argument(
         dest='config',
         type=str,
         nargs='?',
-        help=u'''\
-        在 ~/.teamocil 和当前目录下查找yaml文件
+        help='''\
+        Checks current ~/.teamocil and current directory for yaml files.
         '''
     ).completer = TeamocilCompleter(allowednames=('.yml'), directories=False)
     import_teamocil.set_defaults(callback=command_import_teamocil)
@@ -873,15 +873,15 @@ def get_parser():
         required=True)
     import_tmuxinatorgroup.add_argument(
         '--list', dest='list', action='store_true',
-        help=u'列出 ~/.tmuxinator 和当前工作目录下的配置文件。'
+        help='List yaml configs in ~/.tmuxinator and current working directory.'
     )
 
     import_tmuxinatorgroup.add_argument(
         dest='config',
         type=str,
         nargs='?',
-        help=u'''\
-        在 ~/.tmuxinator 和当前目录下查找yaml文件
+        help='''\
+        Checks current ~/.tmuxinator and current directory for yaml files.
         '''
     ).completer = TmuxinatorCompleter(allowednames=('.yml'), directories=False)
 

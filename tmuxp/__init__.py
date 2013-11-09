@@ -1,6 +1,5 @@
 # -*- coding: utf8 - *-
-"""
-Manage tmux workspaces from JSON and YAML, pythonic API, shell completion.
+"""Manage tmux workspaces from JSON and YAML, pythonic API, shell completion.
 
 tmuxp
 ~~~~~
@@ -8,8 +7,6 @@ tmuxp
 :copyright: Copyright 2013 Tony Narlock.
 :license: BSD, see LICENSE for details
 
-
-test
 """
 
 
@@ -24,4 +21,4 @@ from . import config, util, cli
 
 import logging
 
-__version__ = '0.0.39'
+__version__ = '0.0.40'
