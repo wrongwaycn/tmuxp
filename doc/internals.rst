@@ -28,7 +28,7 @@ tmuxp是一个建立在tmux命令行参数之上的 *抽象层* 。
 一个服务(server)可以拥有多个会话(session)，可以使用 ``Ctrl-a s`` 在会话(session)间切换。
 
 会话(session)，窗口(window)和窗格(pane)都有各自唯一的标识(``session_id``, ``window_id``, ``pane_id`` )，
- :class:`util.TmuxMappingObject` 将利用这些标识来查找保存在 :class:`Server` 对象中的数据。
+:class:`util.TmuxMappingObject` 将利用这些标识来查找保存在 :class:`Server` 对象中的数据。
 
 ======================== ======================= =========================
 对象(Object)             前缀(Prefix)            示例(Example)
@@ -43,50 +43,49 @@ tmuxp是一个建立在tmux命令行参数之上的 *抽象层* 。
 Tmux与Pythonics风格的相似性(Similarities to Tmux and Pythonics)
 ---------------------------------------------------------------
 
-tmuxp is was built in the spirit of understanding how tmux operates
-and how python objects and tools can abstract the API's in a pleasant way.
+经过对tmux操作的深入理解，以及如何以优雅的方式实现python的API
+tmuxp是建立在对tmux操作的深入理解以及对python AP的优雅实现的基础之上。
 
-tmuxp uses ``FORMATTERS`` in tmux to give identity attributes to
-:class:`Session`, :class:`Window` and :class:`Pane` objects. See
-`formatters.c`_.
+tmuxp利用tmux中的 ``FORMATTERS`` 来标识 :class:`Session`, :class:`Window` 和 :class:`Pane` 对象。
 
 .. _formatters.c: http://sourceforge.net/p/tmux/tmux-code/ci/master/tree/format.c
 
-How is tmuxp able to keep references to panes, windows and sessions?
+Tmuxp如何保留对窗格(pane)，窗口(window)和会话(session)的引用？
 
-    Tmux has unique ID's for sessions, windows and panes.
+    Tmux对每个会话(session)，窗口(window)和窗格(pane)都设有一个唯一的ID。
 
-    panes use ``%``, such as ``%1234``
+    窗格(pane)使用 ``%`` 开头，例如 ``%1234``
 
-    windows use ``@``, such as ``@2345``
+    窗口(window)使用 ``@`` 开头，例如 ``@2345``
 
-    sessions use ``$``, for money, such as ``$``
+    会话(session)使用 ``$``, 例如 ``$``
 
-How is tmuxp able to handle windows with no names?
+Tmuxp如何处理无命名窗口(window)？
 
-    Tmux provides ``window_id`` as a unique identifier.
+    Tmux会给每个窗口分配一个唯一的 ``window_id`` 做为标识。
 
-What is a {pane,window}_index vs a {pane,window,session}_id?
+{pane,window}_index VS a {pane,window,session}_id 的区别是什么?
 
-    Pane index refers to the order of a pane on the screen.
+    Pane是根据屏幕中窗格的排布次序来编排序数。
 
-    Window index refers to the # of the pane in the session.
+    window是根据会话中窗格的#来编排序数。
 
-To assert pane, window and session data, tmuxp will use
-:meth:`Server.list_sessions()`, :meth:`Session.list_windows()`,
-:meth:`Window.list_panes()` to update objects.
+为了检验窗格(pane),窗口(window),会话(session)，
+Tmuxp使用 :meth:`Server.list_sessions()`, :meth:`Session.list_windows()`,
+:meth:`Window.list_panes()` 来更新数据。
 
-Idiosyncrasies
---------------
 
-Because this is a python abstraction and commands like ``new-window``
-have dashes (-) replaced with underscores (_).
+特性(Idiosyncrasies)
+--------------------
 
-Reference
----------
+因为Tmuxp是用python实现的，所以诸如 ``new-window`` 这样的命令都会使用减号(-)而非下划线(_)
 
-- tmux docs http://www.openbsd.org/cgi-bin/man.cgi?query=tmux&sektion=1
-- tmux source code http://sourceforge.net/p/tmux/tmux-code/ci/master/tree/
+
+引用(Reference)
+---------------
+
+- tmux 文档 http://www.openbsd.org/cgi-bin/man.cgi?query=tmux&sektion=1
+- tmux 源代码 http://sourceforge.net/p/tmux/tmux-code/ci/master/tree/
 
 .. _abstraction layer: http://en.wikipedia.org/wiki/Abstraction_layer
 .. _ORM: http://en.wikipedia.org/wiki/Object-relational_mapping

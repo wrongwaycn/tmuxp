@@ -2,123 +2,120 @@
 
 .. _developing:
 
-======================
-Developing and Testing
-======================
+==================================
+开发及测试(Developing and Testing)
+==================================
 
 .. todo::
     link to sliderepl or ipython notebook slides
 
-Our tests are inside ``./tmuxp/testsuite``. Tests are implemented using
-:py:mod:`unittest`.
+测试用例位于 ``./tmuxp/testsuite`` 中，由
+:py:mod:`unittest` 实现。
 
-``./run_tests.py`` will create a tmux server on a separate ``socket_name``
-using ``$ tmux -L test_case``.
+``./run_tests.py`` 使用 ``$ tmux -L test_case`` 在单独的一个 ``socket_name`` 上创建一个tmux服务(server)。
 
 .. _install_dev_env:
 
-Install the latest code from git
---------------------------------
+从git获取最新代码并安装(Install the latest code from git)
+---------------------------------------------------------
 
-To begin developing, check out the code from github:
+进行开发的第一步就是从git上获取最新代码:
 
 .. code-block:: bash
 
     $ git clone git@github.com:tony/tmuxp.git
     $ cd tmuxp
 
-Now create a virtualenv, if you don't know how to, you can create a
-virtualenv with:
+接下来创建一个virtualenv环境，如果您尚不了解如何创建virtualenv环境，可以直接使用下面的命令:
 
 .. code-block:: bash
 
     $ virtualenv .env
 
-Then activate it to your current tty / terminal session with:
+然后在当前终端(tty/terminal)下激活virtualenv环境:
 
 .. code-block:: bash
 
     $ source .env/bin/activate
 
-Good! Now let's run this:
+下面就可以安装tmuxp了:
 
 .. code-block:: bash
 
     $ pip install -e .
 
-This has ``pip``, a python package manager install the python package
-in the current directory. ``-e`` means ``--editable``, which means you can
-adjust the code and the installed software will reflect the changes.
+使用pip包管理器可以在当前目录下安装python包， ``-e`` 表示 ``--editable``, 意味着你可以修改源代码，
+而且修改结果会反映到已安装的包。
 
 .. code-block:: bash
 
     $ tmuxp
 
-Test Runner
------------
+测试运行器(Test Runner)
+-----------------------
 
-As you seen above, the ``tmuxp`` command will now be available to you,
-since you are in the virtual environment, your `PATH` environment was
-updated to include a special version of ``python`` inside your ``.env``
-folder with its own packages.
+如上步骤所示，在完成python虚拟环境搭建后并进入该环境后，
+当前 `PATH` 环境就会发生变化，以包含位一个位于 ``.env`` 目录下特定版本的自带类库的 ``python`` 。
+然后就可以运行 ``tmuxp`` 命令。
+
+接下来执行:
 
 .. code-block:: bash
 
     $ ./run_tests.py
 
-You probably didn't see anything but tests scroll by.
+就会看到很多测试信息源源不断地滚屏显示。
 
-If you found a problem or are trying to write a test, you can file an
-`issue on github`_.
+如果您发现了问题或是想提交一个测试，你可以在 `在github上发起问题(issue on github)`_ 。
 
 .. _test_specific_tests:
 
-Test runner options
-"""""""""""""""""""
+测试运行器的参数(Test runner options)
+"""""""""""""""""""""""""""""""""""""
 
 .. note::
 
-    As of v0.0.20, ``--tests`` automatically assume the namespace of
-    ``tmuxp.testsuite``.
+    截止到v0.0.20, ``--tests`` 会默认使用 ``tmuxp.testsuite`` 。
+
 
     .. code-block:: bash
 
         $ ./run_tests.py --tests test_config.ImportExportTest
 
-    Is now equivalent to:
+    等同于:
 
     .. code-block:: bash
 
         $ ./run_tests.py --tests tmuxp.testsuite.test_config.ImportExportTest
 
-Testing specific TestSuites, TestCase and tests
+
+对特定的测试套件，测试案例，测试个体进行测试
 
 .. code-block:: bash
 
     $ ./run_tests.py --help
 
-Will give you an output of ways you can choose to run tests. Example for
-``test_config`` TestSuite:
+上述操作将显示出您可选择的所有测试套件。比如 ``test_config`` :
 
-By :py:class:`unittest.TestSuite` / module:
+使用 :py:class:`unittest.TestSuite` :
 
 .. code-block:: bash
 
     $ ./run_tests.py test_config
 
-by :py:class:`unittest.TestCase`:
+使用 :py:class:`unittest.TestCase`:
 
 .. code-block:: bash
 
     $ ./run_tests.py --tests test_config.ImportExportTest
 
-individual tests:
+单独测试:
 
 .. code-block:: bash
 
     $ ./run_tests.py --tests test_config.ImportExportTest.test_export_json
 
-Multiple can be separated by spaces:
+多个测试之间可以用空格间隔开:
 
 .. code-block:: bash
 
@@ -127,75 +124,74 @@ Multiple can be separated by spaces:
 
 .. _test_builder_visually:
 
-Visual testing
-''''''''''''''
+可视化的测试(Visual testing)
+''''''''''''''''''''''''''''
 
-You can watch tmux testsuite build sessions visually by keeping a client
-open in a separate terminal.
+您可以单独打开一个终端用来观察tmux测试套件如何创建会话(session)。
 
-Create two terminals:
+打开两个终端:
 
-  - Terminal 1: ``$ tmux -L test_case``
-  - Terminal 2: ``$ cd`` into the tmuxp project and into the
-    ``virtualenv`` if you are using one, see details on installing the dev
-    version of tmuxp above. Then:
+  - 终端 1: ``$ tmux -L test_case``
+  - 终端 2: ``$ cd`` 进入tmuxp项目目录，并启用 ``virtualenv`` 进入虚拟环境
+    (详见上文所述如何安装tmuxp开发版)，然后运行:
 
     .. code-block:: bash
     
         $ python ./run_tests.py --tests tests_workspacebuilder
 
-Terminal 1 should have flickered and built the session before your eyes.
-tmuxp hides this building from normal users.
+终端1 会闪烁一下然后在您的肉眼查觉之前就已经完成了对会话(session)的创建。
+tmuxp对普通用户隐藏了这部分信息。
 
-Verbosity and logging
-'''''''''''''''''''''
+记录和日志(Verbosity and logging)
+'''''''''''''''''''''''''''''''''
 
 ``./run_tests.py`` supports two options, these are *optional* flags that
 may be added to for :ref:`test_specific_tests` and
 :ref:`test_builder_visually`.
+``./run_tests.py`` 支持两个选项，可以添加到 :ref:`test_specific_tests` 和 :ref:`test_builder_visually` 。
 
-1.  log level: ``-l`` aka ``--log-level``, with the options of ``debug``,
-    ``info``, ``warn``, ``error``, ``fatal``. Default is ``INFO``.
+1.  日志等级: ``-l`` 又可以表示为 ``--log-level``, 可以设为 ``debug``,
+    ``info``, ``warn``, ``error``, ``fatal``. 默认为 ``INFO`` 。
 
     .. code-block:: bash
 
         $ ./run_tests.py --log-level debug
 
-    short form:
+    简短形式:
 
     .. code-block:: bash
 
         $ ./run_tests.py -l debug
 
-2.  unit test verbosity:
+2.  单元测试记录:
 
-    ``--verbosity`` may be set to ``0``, ``1`` and ``2``.  Default: ``2``.
+    ``--verbosity`` 可以设置为 ``0``, ``1`` 和 ``2``.  默认为: ``2``.
 
     .. code-block:: bash
 
         $ ./run_tests.py --verbosity 0
 
-Run tests on save
------------------
+保存文件时自动运行测试(Run tests on save)
+-----------------------------------------
 
-You can re-run tests automatically on file edit.
+Tmux可以监控文件的改动，在保时时自动运行测试。
 
 .. note::
-    This requires and installation of ``watching_testrunner`` from pypi.
+    这个功能需要从pypi中安装 ``watching_testrunner`` 。
 
-Install `watching_testrunner`_ from `pypi`_:
+从 `pypi`_ 中安装 `watching_testrunner`_:
 
 .. code-block:: bash
 
     $ pip install watching_testrunner
 
-To run all tests upon editing any ``.py`` file:
+编辑任何一个 ``.py`` 文件都会引发所有测试:
 
 .. code-block:: bash
 
     $ watching_testrunner --basepath ./ --pattern="*.py" python run_tests.py
 
-To run test where :ref:`test_builder_visually` you may:
+如果只想引发 :ref:`test_builder_visually` :
 
 .. code-block:: bash
 
@@ -206,21 +202,21 @@ To run test where :ref:`test_builder_visually` you may:
 
 .. _tmuxp developer config:
 
-tmuxp developer config
-""""""""""""""""""""""
+tmuxp开发者配置(tmuxp developer config)
+"""""""""""""""""""""""""""""""""""""""
 
 .. image:: _static/tmuxp-dev-screenshot.png
     :scale: 100%
     :width: 60%
     :align: center
 
-After you :ref:`install_dev_env`, when inside the tmuxp checkout:
+:ref:`install_dev_env` ，签出tmxp之后运行:
 
 .. code-block:: bash
 
     $ tmuxp load .
 
-this will load the ``.tmuxp.yaml`` in the root of the project.
+上面的操作会在项目根目录下载入 ``.tmuxp.yaml`` 文件。
 
 .. literalinclude:: ../.tmuxp.yaml
     :language: yaml
@@ -230,17 +226,15 @@ this will load the ``.tmuxp.yaml`` in the root of the project.
 Travis CI
 """""""""
 
-tmuxp uses `travis-ci`_ for continuous integration / automatic unit
-testing.
+Tmuxp使用 `travis-ci`_ 所提供的持续集成/自动化单元测试。
 
-travis allows for testing against multiple scenarios. Currently tmuxp
-is tested against 1.8 and latest in addition to python 2.7. The
-`travis build site`_ uses this `.travis.yml`_ configuration:
+travis支持多种场景下的测试，当前tmuxp已通tmux1.8版本和python2.7下的测试。
+`travis下tmuxp测试`_ 使用 `.travis.yml`_ 配置:
 
 .. literalinclude:: ../.travis.yml
     :language: yaml
 
 .. _travis-ci: http://www.travis-ci.org
-.. _travis build site: http://www.travis-ci.org/tony/tmuxp
+.. _travis下tmuxp测试: http://www.travis-ci.org/tony/tmuxp
 .. _.travis.yml: https://github.com/tony/tmuxp/blob/master/.travis.yml
-.. _issue on github: https://github.com/tony/tmuxp/issues
+.. _在github上发起问题(issue on github): https://github.com/tony/tmuxp/issues

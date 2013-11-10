@@ -90,14 +90,14 @@ JSON
         |                 |
         +-----------------+
 
-YAML - Short form
-"""""""""""""""""
+YAML - 简短形式(Short form)
+"""""""""""""""""""""""""""
 
 .. literalinclude:: ../examples/2-pane-vertical.yaml
     :language: yaml
 
-JSON - Short form
-"""""""""""""""""
+JSON - 简短形式(Short form)
+"""""""""""""""""""""""""""
 
 .. literalinclude:: ../examples/2-pane-vertical.json
     :language: json
